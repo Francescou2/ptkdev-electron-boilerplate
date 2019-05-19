@@ -1,0 +1,166 @@
+{
+	"name": "yourprojectname",
+	"description": "Yourprojectname",
+	"version": "1.0.0",
+	"main": "app_electron.js",
+	"author": "Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptk.dev)",
+	"license": "MIT",
+	"homepage": "https://yourprojectname.com",
+	"docs": "https://docs.yourprojectname.com",
+	"donate": {
+		"patreon": "http://patreon.ptkdev.io",
+		"paypal": "http://paypal.ptkdev.io",
+		"ko-fi": "http://coffee.ptkdev.io"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ptkdev/yourprojectname.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ptkdev/yourprojectname/issues"
+	},
+	"scripts": {
+		"dev": "gulp build-static && npm run dev-express",
+		"dev-express": "gulp server --config=\"./configs/config.js\"",
+		"dev-electron": "electron .",
+		"dist": "gulp build-static && electron-builder",
+		"pack": "gulp build-static && electron-builder --dir",
+		"build": "npm run dist",
+		"build-mac": "electron-builder --dir --mac dmg",
+		"build-win": "electron-builder --dir --win portable",
+		"build-win-32bit": "electron-builder --dir --win portable --ia32",
+		"build-lnx": "electron-builder --dir --linux deb",
+		"clean": "rm -rf build node_modules package-lock.json && npm install",
+		"update": "rm -f package-lock.json && npm update",
+		"vendor": "cpy node_modules/cash-dom/dist/cash.min.js www/js/vendor/cash-dom/ && cpy node_modules/bulma/css/bulma.min.css www/css/vendor/bulma/",
+		"lint": "eslint ./ --cache --ignore-pattern .gitignore",
+		"lint-fix": "eslint ./ --cache --ignore-pattern .gitignore --fix --rule 'snakecasejs/snakecasejs: off'",
+		"git-set-upstream": "git remote add upstream git@github.com:ptkdev/yourprojectname.git && git fetch upstream",
+		"git-pull-upstream": "git pull upstream master && git pull upstream beta && git pull upstream nightly",
+		"git-switch-master": "git checkout master && git pull --recursive",
+		"git-switch-beta": "git checkout beta && git pull --recursive",
+		"git-switch-nightly": "git checkout nightly && git pull --recursive",
+		"git-pull": "git pull --recursive",
+		"git-ignore-reset": "git rm -r --cached . && git add . && git commit -m \"[Fix] Removing all files in .gitignore\"",
+		"git-postinstall": "npm run docs-init && npm run git-set-upstream && git-switch-nightly",
+		"npm-publish-master": "git checkout master && npm publish",
+		"npm-publish-beta": "git checkout beta && npm publish --tag beta",
+		"npm-publish-nightly": "git checkout nightly && npm publish --tag nightly",
+		"webp": "cwebp -q 100 ./www/img/logo.png -o ./www/img/logo.webp",
+		"contributors-generate": "all-contributors generate",
+		"docs": "markserv ./docs/README.md",
+		"test": "jest",
+		"postinstall": "npm run vendor && electron-builder install-app-deps",
+		"devpostinstall": "npm run contributors-generate"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint && npm run contributors-generate"
+		}
+	},
+	"keywords": [
+		"electron",
+		"boilerplate"
+	],
+	"engines": {
+		"node": ">=10.0.0"
+	},
+	"dependencies": {
+		"electron": "^4.0.0",
+		"electron-builder": "latest",
+		"electron-debug": "latest",
+		"electron-devtools-installer": "latest",
+		"electron-rebuild": "latest",
+		"electron-context-menu": "latest",
+		"bulma": "latest",
+		"cash-dom": "latest",
+		"chalk": "latest",
+		"cookie-parser": "latest",
+		"express": "latest",
+		"express-session": "latest",
+		"jsonwebtoken": "latest",
+		"lowdb": "latest",
+		"nunjucks": "latest",
+		"path": "latest"
+	},
+	"devDependencies": {
+		"all-contributors-cli": "latest",
+		"browser-sync": "latest",
+		"chai": "latest",
+		"cpy-cli": "latest",
+		"eslint": "latest",
+		"eslint-config-standard": "latest",
+		"eslint-plugin-import": "latest",
+		"eslint-plugin-jest": "latest",
+		"eslint-plugin-jsdoc": "latest",
+		"eslint-plugin-node": "latest",
+		"eslint-plugin-promise": "latest",
+		"eslint-plugin-snakecasejs": "latest",
+		"eslint-plugin-standard": "latest",
+		"gulp": "latest",
+		"gulp-concat": "latest",
+		"gulp-clean-css": "latest",
+		"gulp-terser": "latest",
+		"gulp-rename": "latest",
+		"gulp-nodemon": "latest",
+		"gulp-nunjucks": "latest",
+		"gulp-sass": "latest",
+		"gulp-run": "latest",
+		"husky": "latest",
+		"jest": "latest",
+		"json": "latest",
+		"markserv": "latest",
+		"pm2": "latest",
+		"yargs": "latest"
+	},
+	"build": {
+		"productName": "Social Manager Tools",
+		"appId": "io.ptkdev.socialmanagertools",
+		"artifactName": "${productName}-${version}.${ext}",
+		"directories": {
+			"output": "build",
+			"buildResources": "src/build_resources"
+		},
+		"files": [
+			"www",
+			"app_electron.js"
+		],
+		"publish": {
+			"provider": "github",
+			"owner": "social-manager-tools",
+			"repo": "social-manager-tools"
+		},
+		"mac": {
+			"category": "public.app-category.network"
+		},
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true,
+			"createDesktopShortcut": true
+		},
+		"dmg": {
+			"contents": [
+				{
+					"x": 110,
+					"y": 150
+				},
+				{
+					"x": 240,
+					"y": 150,
+					"type": "link",
+					"path": "/Applications"
+				}
+			]
+		},
+		"linux": {
+			"category": "Network",
+			"target": [
+				"deb",
+				"pacman",
+				"tar.gz",
+				"AppImage"
+			]
+		}
+	},
+	"contributors": []
+}

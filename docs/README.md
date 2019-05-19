@@ -16,17 +16,15 @@
 > Why? I like to have a solid starting point and have full control over it.
 
 * [✔️] Electron app (Boilerplate)
-* [✔️] Folder `www` compatible with boilerplate of Cordova and Express
+* [✔️] Folder `www` compatible with boilerplate of electron &amp; express
 * [✔️] Easy to use, work and deploy
 * [✔️] Browser sync, auto refresh, auto reload
-* [❌] PWA (Not available in electron, in future? Let's hope so)
 * [✔️] Nightmode
 * [✔️] Multi language
-* [❌] Switch language in app (**coming soon**)
 * [✔️] Template engine (nunjucks)
 * [✔️] Advanced logger
 * [✔️] Auto merge js, css (sass) in 1 file.
-* [❌] Build exe, dmg and deb files (**coming soon**)
+* [❌] Build exe, dmg and deb files (coming soon)
 
 ## 🔧 Run (Developer mode)
 1. Replace in all project `yourprojectname.com` string with your website url.
