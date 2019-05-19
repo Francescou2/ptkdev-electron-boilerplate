@@ -44,8 +44,8 @@ module.exports = {
 			"instagram": "", // nickname, without @
 			"pinterest": ""  // nickname from url
 		},
-		"pwa": {
-			"status": "enabled",
+		"pwa": { // pwa and service worker not work in electron
+			"status": "disabled",
 			"manifest": "/manifest.webmanifest",
 			"service_worker": "/sw.js",
 			"color": "#ffffff",
