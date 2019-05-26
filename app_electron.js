@@ -13,6 +13,8 @@
  *           GitHub:   https://github.com/ptkdev/yourprojectname
  *
  */
+const config = require("./configs/config");
+const translate = require(`./translations/${config.system.language}`);
 const {app, BrowserWindow, Tray, Menu} = require("electron");
 const path = require("path");
 let main_window;
@@ -21,9 +23,9 @@ let app_icon, context_menu;
 require("electron-context-menu")({
 	prepend: (params) => [{
 		labels: {
-			cut: "Cut",
-			copy: "Copy",
-			paste: "Paste"
+			cut: translate.electron_cut,
+			copy: translate.electron_copy,
+			paste: translate.electron_paste,
 		},
 		visible: params.mediaType === "input"
 	}]
@@ -34,25 +36,25 @@ function create_window() {
 		width: 1024,
 		height: 768,
 		title: "Yourprojectname",
-		icon: path.join(__dirname, "/www/img/logo.png"),
+		icon: path.join(__dirname, "/themes_en/default/img/icons/electron/icon.png"),
 		webPreferences: {
 			enableRemoteModule: true,
 			nodeIntegration: true
 		}
 	});
 
-	app_icon = new Tray(path.join(__dirname, "/www/img/logo.png"));
+	app_icon = new Tray(path.join(__dirname, "/themes_en/default/img/icons/electron/icon.png"));
 
 	if (process.platform != "darwin") {
 		context_menu = Menu.buildFromTemplate([
 			{
-				label: "Show",
+				label: translate.electron_show,
 				click: () => {
 					main_window.show();
 				}
 			},
 			{
-				label: "Quit",
+				label: translate.electron_quit,
 				click: function() {
 					app.isQuiting = true;
 					app.quit();
@@ -61,7 +63,14 @@ function create_window() {
 
 		]);
 	}
-	main_window.loadURL("http://localhost:3001");
+
+	if (config.system.debug === "disabled") {
+		main_window.loadFile(`themes_${config.system.language}/${config.site.theme}/pages/index.html`);
+	} else {
+		main_window.loadURL("http://localhost:3001");
+	}
+
+	// main_window.openDevTools();
 
 	if (process.platform != "darwin") {
 		app_icon.on("click", function(event) {

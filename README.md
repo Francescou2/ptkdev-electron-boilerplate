@@ -7,26 +7,28 @@
 ## 🎁 Support: Donate
 > This project is **free**, **open source** and I try to provide excellent **free support**. Why donate? I work on open source projects several hours a week or in my spare time and try to keep it up to date and working. A lower donation would allow continuous development, ever better quality and the realization of this dream. **THANK YOU!**
 
-[![](https://img.shields.io/badge/donate-paypal-005EA6.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/donate-opencollective-5DA4F9.svg)](http://opencollective.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io)
+[![](https://img.shields.io/badge/donate-paypal-005EA6.svg)](http://paypal.ptkdev.io) [![](https://img.shields.io/badge/donate-patreon-F87668.svg)](http://patreon.ptkdev.io) [![](https://img.shields.io/badge/buy%20me-coffee-4B788C.svg)](http://coffee.ptkdev.io)
 
 ## 🔖 Screenshot
-[![](https://raw.githubusercontent.com/ptkdev-boilerplate/ptkdev-electron-boilerplate/master/www/img/screenshot/electron-app.png)](#)
+[![](https://raw.githubusercontent.com/ptkdev-boilerplate/ptkdev-electron-boilerplate/master/themes/default/img/screenshot/electron-app.png)](#)
 
 ## 💡 Features
 > Why? I like to have a solid starting point and have full control over it.
 
 * [✔️] Electron app (Boilerplate)
-* [✔️] Folder `www` compatible with boilerplate of Cordova and Express
+* [✔️] Themes compatible with boilerplate of Electron and Cordova
 * [✔️] Easy to use, work and deploy
 * [✔️] Browser sync, auto refresh, auto reload
-* [❌] PWA (Not available in electron, in future? Let's hope so)
+* [❌] PWA and Service Worker (Not available in electron, in future? Let's hope so)
+* [✔️] Images LazyLoad
+* [✔️] Themes Switch
 * [✔️] Nightmode
 * [✔️] Multi language
-* [❌] Switch language in app (**coming soon**)
+* [✔️] Switch language in app
 * [✔️] Template engine (nunjucks)
 * [✔️] Advanced logger
 * [✔️] Auto merge js, css (sass) in 1 file.
-* [❌] Build exe, dmg and deb files (**coming soon**)
+* [✔️] Build exe, dmg and deb files
 
 ## 🔧 Run (Developer mode)
 1. Replace in all project `yourprojectname.com` string with your website url.
@@ -39,21 +41,26 @@
 
 See scripts on `package.json` for more feature and prod mode.
 
+## 📦 Build (Windows, Linux, Mac OS)
+- `npm run build-win` generate windows **.exe**
+- `npm run build-lnx` generate linux **.deb**
+- `npm run build-win` generate mac **.dmg**
+
+**NOTE:** Disable debug mode in `config.js`
+
 ## 📚 Documentation
 1. Run `npm run docs`
 
 ## 👑 Sponsors (max 10 available)
-Support this project by becoming a sponsor. 🙏 Become a sponsor on [patreon](http://patreon.ptkdev.io) or [opencollective](https://opencollective.com/social-manager-tools#sponsor). Your logo will show up here with a link to your website.
+Support this project by becoming a sponsor. 🙏 Become a sponsor on [patreon](http://patreon.ptkdev.io).
 
-[![](https://opencollective.com/social-manager-tools/sponsor/0/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/0/website) [![](https://opencollective.com/social-manager-tools/sponsor/1/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/1/website) [![](https://opencollective.com/social-manager-tools/sponsor/2/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/2/website) [![](https://opencollective.com/social-manager-tools/sponsor/3/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/3/website) [![](https://opencollective.com/social-manager-tools/sponsor/4/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/4/website) [![](https://opencollective.com/social-manager-tools/sponsor/5/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/5/website) [![](https://opencollective.com/social-manager-tools/sponsor/6/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/6/website) [![](https://opencollective.com/social-manager-tools/sponsor/7/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/7/website) [![](https://opencollective.com/social-manager-tools/sponsor/8/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/8/website) [![](https://opencollective.com/social-manager-tools/sponsor/9/avatar.svg)](https://opencollective.com/social-manager-tools/sponsor/9/website)
 
 ## 🦄 Backers
-Thanks to all our backers! 🙏 Become a backer on [patreon](http://patreon.ptkdev.io) or [opencollective](https://opencollective.com/social-manager-tools#sponsor)
+Thanks to all our backers! 🙏 Become a backer on [patreon](http://patreon.ptkdev.io).
 
-[![Twitch: prattquellolive](https://raw.githubusercontent.com/social-manager-tools/socialmanagertools-igbot/nightly/.github/assets/patreon/prattquello.png)](https://www.twitch.tv/prattquellolive) [![JavaScript Room](https://raw.githubusercontent.com/social-manager-tools/socialmanagertools-igbot/nightly/.github/assets/patreon/jsroom.png)](https://www.instagram.com/room_js/) [![](https://opencollective.com/social-manager-tools/backers.svg?width=890)](https://opencollective.com/social-manager-tools#backers)
 
 ## ❤️ Contributing
-I 💟 contributions! I will happily accept your pull request! Translations, grammatical corrections (GrammarNazi you are welcome! Yes my English is horrible, sorry), new modes, best css selectors, fix and new feature! Read [Developers Guidelines](http://docs.socialmanager.tools/developers/guidesline/README.md) for best practices. Do not be afraid, if the code is not perfect we will work together 👯 and remember to insert your name in `.all-contributorsrc` and `package.json` file.
+I 💟 contributions! I will happily accept your pull request! Translations, grammatical corrections (GrammarNazi you are welcome! Yes my English is horrible, sorry), new modes, best css selectors, fix and new feature! Do not be afraid, if the code is not perfect we will work together 👯 and remember to insert your name in `.all-contributorsrc` and `package.json` file.
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 

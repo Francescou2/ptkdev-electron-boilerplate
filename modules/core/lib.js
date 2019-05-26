@@ -50,7 +50,7 @@ class Yourprojectname {
 		this.utils.create_files();
 		this.core.config = this.utils.fix_config(this.core.config);
 
-		nunjucks.configure("./", {
+		nunjucks.configure(`./themes/${this.core.config.site.theme}/`, {
 		    autoescape: false,
 		    express: this.core.app
 		});
@@ -70,6 +70,11 @@ class Yourprojectname {
 
 		this.static.static_files();
 
+		// this.oauth.express();
+		// this.oauth.twitter_init();
+		// this.oauth.twitter();
+		// this.oauth.serialize();
+
 		if (this.core.config.site.pwa.status === "enabled") {
 			this.pwa.webmanifest();
 			this.pwa.serviceworker();
@@ -77,7 +82,10 @@ class Yourprojectname {
 		}
 
 		this.pages.index();
-		// this.pages.login();
+		this.pages.offline();
+		this.pages_policy.privacy();
+		this.pages_policy.cookie();
+		this.pages.error_404();
 
 	}
 

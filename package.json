@@ -23,16 +23,17 @@
 		"dev": "gulp build-static && npm run dev-express",
 		"dev-express": "gulp server --config=\"./configs/config.js\"",
 		"dev-electron": "electron .",
-		"dist": "gulp build-static && electron-builder",
-		"pack": "gulp build-static && electron-builder --dir",
-		"build": "npm run dist",
-		"build-mac": "electron-builder --dir --mac dmg",
-		"build-win": "electron-builder --dir --win portable",
-		"build-win-32bit": "electron-builder --dir --win portable --ia32",
-		"build-lnx": "electron-builder --dir --linux deb",
+		"dist": "electron-builder",
+		"pack": "electron-builder --dir",
+		"build-compile": "rm -Rf themes_tmp && rm -Rf themes_it && rm -Rf themes_en && gulp build-js --language=\"it\" && cp -Rf themes themes_tmp && gulp build-static-nunjucks --language=\"it\" && mv themes_tmp themes_it && gulp build-js --language=\"en\" && cp -Rf themes themes_tmp && gulp build-static-nunjucks --language=\"en\" && mv themes_tmp themes_en",
+		"build": "npm run build-compile && npm run dist",
+		"build-mac": "npm run build-compile && electron-builder --dir --mac dmg",
+		"build-win": "npm run build-compile && electron-builder --dir --win portable",
+		"build-win-32bit": "npm run build-compile && electron-builder --dir --win portable --ia32",
+		"build-lnx": "npm run build-compile && electron-builder --dir --linux deb",
 		"clean": "rm -rf build node_modules package-lock.json && npm install",
 		"update": "rm -f package-lock.json && npm update",
-		"vendor": "cpy node_modules/cash-dom/dist/cash.min.js www/js/vendor/cash-dom/ && cpy node_modules/bulma/css/bulma.min.css www/css/vendor/bulma/",
+		"vendor": "cpy node_modules/cash-dom/dist/cash.min.js themes/default/js/vendor/cash-dom/ && cpy node_modules/bulma/css/bulma.min.css themes/default/css/vendor/bulma/ && cpy node_modules/vanilla-lazyload/dist/lazyload.min.js themes/default/js/vendor/lazyload/",
 		"lint": "eslint ./ --cache --ignore-pattern .gitignore",
 		"lint-fix": "eslint ./ --cache --ignore-pattern .gitignore --fix --rule 'snakecasejs/snakecasejs: off'",
 		"git-set-upstream": "git remote add upstream git@github.com:ptkdev/yourprojectname.git && git fetch upstream",
@@ -46,7 +47,7 @@
 		"npm-publish-master": "git checkout master && npm publish",
 		"npm-publish-beta": "git checkout beta && npm publish --tag beta",
 		"npm-publish-nightly": "git checkout nightly && npm publish --tag nightly",
-		"webp": "cwebp -q 100 ./www/img/logo.png -o ./www/img/logo.webp",
+		"webp": "cwebp -q 100 ./themes/default/img/logo.png -o ./themes/default/img/logo.webp",
 		"contributors-generate": "all-contributors generate",
 		"docs": "markserv ./docs/README.md",
 		"test": "jest",
@@ -66,11 +67,6 @@
 		"node": ">=10.0.0"
 	},
 	"dependencies": {
-		"electron": "^4.0.0",
-		"electron-builder": "latest",
-		"electron-debug": "latest",
-		"electron-devtools-installer": "latest",
-		"electron-rebuild": "latest",
 		"electron-context-menu": "latest",
 		"bulma": "latest",
 		"cash-dom": "latest",
@@ -81,9 +77,16 @@
 		"jsonwebtoken": "latest",
 		"lowdb": "latest",
 		"nunjucks": "latest",
+		"vanilla-lazyload": "latest",
 		"path": "latest"
 	},
 	"devDependencies": {
+		"electron": "^4.0.0",
+		"electron-builder": "latest",
+		"electron-debug": "latest",
+		"electron-devtools-installer": "latest",
+		"electron-rebuild": "latest",
+		"asar": "latest",
 		"all-contributors-cli": "latest",
 		"browser-sync": "latest",
 		"chai": "latest",
@@ -104,8 +107,10 @@
 		"gulp-rename": "latest",
 		"gulp-nodemon": "latest",
 		"gulp-nunjucks": "latest",
-		"gulp-sass": "latest",
+		"gulp-nunjucks-render": "latest",
+		"gulp-data": "latest",
 		"gulp-run": "latest",
+		"gulp-sass": "latest",
 		"husky": "latest",
 		"jest": "latest",
 		"json": "latest",
@@ -114,21 +119,24 @@
 		"yargs": "latest"
 	},
 	"build": {
-		"productName": "Social Manager Tools",
-		"appId": "io.ptkdev.socialmanagertools",
+		"productName": "Yourprojectname",
+		"appId": "io.ptkdev.yourprojectname",
 		"artifactName": "${productName}-${version}.${ext}",
 		"directories": {
 			"output": "build",
-			"buildResources": "src/build_resources"
+			"buildResources": "themes/default/img/icons/electron"
 		},
 		"files": [
-			"www",
+			"configs",
+			"themes_en",
+			"themes_it",
+			"translations",
 			"app_electron.js"
 		],
 		"publish": {
 			"provider": "github",
-			"owner": "social-manager-tools",
-			"repo": "social-manager-tools"
+			"owner": "ptkdev-boilerplate",
+			"repo": "ptkdev-electron-boilerplate"
 		},
 		"mac": {
 			"category": "public.app-category.network"

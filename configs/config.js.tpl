@@ -2,7 +2,8 @@ module.exports = {
 	// Developer Configs
 	"system": {
 		"config_version": "1.0.0",   // version of this file, version increase if change values from previously config
-		"debug": "enabled",          // debug mode, disabled for prod
+		"debug": "enabled",         // debug mode, disabled for prod
+		"platform": "electron",		 // platform (cordova, electron, express)
 		"language": "en",            // available: en = English / it = Italian
 		"nginx": "disabled",         // Better performance if you use ngnix for serve static files, example: configs/nginx.conf.tpl
 		"terminal_colors": "enabled" // enabled/disabled if you want colors in windows power shell/cmd, mac console or linux terminal
@@ -28,6 +29,7 @@ module.exports = {
 	},
 
 	"site": {
+		"theme": "default",
 		"author": "Patryk Rzucidło (PTKDev)",
 		"email": "support@ptkdev.io",
 		"protocol": "http://",               // force https urls or http urls
@@ -44,21 +46,27 @@ module.exports = {
 			"instagram": "", // nickname, without @
 			"pinterest": ""  // nickname from url
 		},
-		"pwa": { // pwa and service worker not work in electron
+		"pwa": { // not work on electron
 			"status": "disabled",
+			"install": "disabled",
 			"manifest": "/manifest.webmanifest",
 			"service_worker": "/sw.js",
 			"color": "#ffffff",
 			"bgcolor": "#ffffff",
 			"files": [
+				"/manifest.webmanifest",
 				"/js/full.min.js",
 				"/css/full.min.css",
+				"/css/skin-default.min.css",
+				"/css/skin-nightmode.min.css",
+				"/img/lazy.png",
 				"/img/logo.png",
 				"/img/logo.webp"
 			],
 			"pages": [
 				"/",
 				"/?pwa=1",
+				"/offline",
 				"/policy/privacy",
 				"/policy/cookie"
 			],

@@ -16,6 +16,8 @@ const gulp_sass = require("gulp-sass");
 const gulp_minifycss = require("gulp-clean-css");
 const gulp_minifyjs = require("gulp-terser");
 const gulp_nunjucks = require("gulp-nunjucks");
+const gulp_nunjucks_render = require("gulp-nunjucks-render");
+const gulp_data = require("gulp-data");
 const gulp_rename = require("gulp-rename");
 const nodemon = require("gulp-nodemon");
 const browsersync = require("browser-sync").create();
@@ -25,7 +27,8 @@ const utils = new Utils();
 let config = (argv.config ? require(argv.config) : require("./configs/config.js"));
 config = utils.fix_config(config);
 
-const translate = require(`./translations/${config.system.language}`);
+let cookie = {"style:": "default"};
+let language = (argv.language ? argv.language : config.system.language);
 
 /**
 * Task: build-css & build-js + nunjucks
@@ -34,58 +37,68 @@ const translate = require(`./translations/${config.system.language}`);
 *
 */
 gulp.task("build-css", function() {
-	return gulp.src(["./www/css/vendor/bulma/bulma.min.css", "./www/css/main.scss", "./www/css/animate.scss"])
+	return gulp.src([`./themes/${config.site.theme}/css/vendor/bulma/bulma.min.css`, `./themes/${config.site.theme}/css/main.scss`, `./themes/${config.site.theme}/css/animate.scss`])
 		.pipe(gulp_concat({path: "./full.min.tmp"}))
 		.pipe(gulp_sass())
 		.pipe(gulp_minifycss())
 		.pipe(gulp_rename("full.min.css"))
-		.pipe(gulp.dest("./www/css/"))
+		.pipe(gulp.dest(`./themes/${config.site.theme}/css/`))
 		.pipe(browsersync.stream());
 });
 
 gulp.task("build-css-skeleton", function() {
-	return gulp.src(["./www/css/skeleton.scss"])
+	return gulp.src([`./themes/${config.site.theme}/css/skeleton.scss`])
 		.pipe(gulp_concat({path: "./skeleton.min.tmp"}))
 		.pipe(gulp_sass())
 		.pipe(gulp_minifycss())
 		.pipe(gulp_rename("skeleton.min.css"))
-		.pipe(gulp.dest("./www/css/"));
+		.pipe(gulp.dest(`./themes/${config.site.theme}/css/`));
 });
 
 gulp.task("build-css-skin-default", function() {
-	return gulp.src(["./www/css/skin-default.scss"])
+	return gulp.src([`./themes/${config.site.theme}/css/skin-default.scss`])
 		.pipe(gulp_concat({path: "./skin-default.min.tmp"}))
 		.pipe(gulp_sass())
 		.pipe(gulp_minifycss())
 		.pipe(gulp_rename("skin-default.min.css"))
-		.pipe(gulp.dest("./www/css/"))
+		.pipe(gulp.dest(`./themes/${config.site.theme}/css/`))
 		.pipe(browsersync.stream());
 });
 
 gulp.task("build-css-skin-nightmode", function() {
-	return gulp.src(["./www/css/skin-nightmode.scss"])
+	return gulp.src([`./themes/${config.site.theme}/css/skin-nightmode.scss`])
 		.pipe(gulp_concat({path: "./skin-nightmode.min.tmp"}))
 		.pipe(gulp_sass())
 		.pipe(gulp_minifycss())
 		.pipe(gulp_rename("skin-nightmode.min.css"))
-		.pipe(gulp.dest("./www/css/"))
+		.pipe(gulp.dest(`./themes/${config.site.theme}/css/`))
 		.pipe(browsersync.stream());
 });
 
 gulp.task("build-js", function() {
-	let jsarray = ["./www/js/vendor/cash-dom/cash.min.js", "./www/js/main.js", "./www/js/skin-switcher.js", "./www/js/main.js", "./www/js/events.js"];
+	let jsarray = [`./themes/${config.site.theme}/js/vendor/cash-dom/cash.min.js`, `./themes/${config.site.theme}/js/vendor/lazyload/lazyload.min.js`, `./themes/${config.site.theme}/js/main.js`, `./themes/${config.site.theme}/js/skin-switcher.js`, `./themes/${config.site.theme}/js/routes.js`, `./themes/${config.site.theme}/js/policy/cookielaw.js`, `./themes/${config.site.theme}/js/main.js`, `./themes/${config.site.theme}/js/events.js`];
 
 	if (config.site.pwa.status === "enabled") {
-		jsarray.push("./www/js/pwa/prompt.js");
-		jsarray.push("./www/js/pwa/update.js");
+		jsarray.push(`./themes/${config.site.theme}/js/pwa/prompt.js`);
+		jsarray.push(`./themes/${config.site.theme}/js/pwa/update.js`);
 	}
 
 	return gulp.src(jsarray)
 		.pipe(gulp_concat({path: "full.min.tmp"}))
-		.pipe(gulp_nunjucks.compile({config: config, translate: translate}))
+		.pipe(gulp_nunjucks.compile({config: config, translate: require(`./translations/${language}`)}))
 		.pipe(gulp_minifyjs())
 		.pipe(gulp_rename("full.min.js"))
-		.pipe(gulp.dest("./www/js/"));
+		.pipe(gulp.dest(`./themes/${config.site.theme}/js/`));
+});
+
+gulp.task("build-static-nunjucks", function() {
+	return gulp.src([`./themes_tmp/${config.site.theme}/pages/**/*.html`])
+		.pipe(gulp_data({config: config, translate: require(`./translations/${language}`), cookie: cookie}))
+		.pipe(gulp_nunjucks_render({
+			envOptions: {autoescape: false},
+		    path: [`./themes_tmp/${config.site.theme}/`]
+	    }))
+		.pipe(gulp.dest(`./themes_tmp/${config.site.theme}/pages/`));
 });
 
 gulp.task("build-css-skin", gulp.parallel("build-css-skin-default", "build-css-skin-nightmode"));
@@ -112,20 +125,20 @@ gulp.task("browser-sync", function() {
 			      "./modules/**/*",
 			      "./translations/**/*",
 			      "./configs/**/*",
-			      "./www/**/*.html",
-			      "./www/css/skeleton.min.css",
-			      "./www/js/full.min.js"
+			      `./themes/${config.site.theme}/**/*.html`,
+			      `./themes/${config.site.theme}/css/skeleton.min.css`,
+			      `./themes/${config.site.theme}/js/full.min.js`
 			     ],
 		"ext": "js, html, css"
 	}).on("restart", function() {
 		browsersync.reload();
 	});
 
-	gulp.watch(["./www/**/*.scss", "!./www/css/skeleton.scss", "!./www/css/skin-default.scss", "!./www/css/skin-nightmode.scss"]).on("change", gulp.parallel("build-css"));
-	gulp.watch(["./www/css/skeleton.scss"]).on("change", gulp.parallel("build-css-skeleton"));
-	gulp.watch(["./www/css/skin-default.scss", "./www/css/skin-nightmode.scss"]).on("change", gulp.parallel("build-css-skin"));
+	gulp.watch([`./themes/${config.site.theme}/**/*.scss`, `!./themes/${config.site.theme}/css/skeleton.scss`, `!./themes/${config.site.theme}/css/skin-default.scss`, `!./themes/${config.site.theme}/css/skin-nightmode.scss`]).on("change", gulp.parallel("build-css"));
+	gulp.watch([`./themes/${config.site.theme}/css/skeleton.scss`]).on("change", gulp.parallel("build-css-skeleton"));
+	gulp.watch([`./themes/${config.site.theme}/css/skin-default.scss`, `./themes/${config.site.theme}/css/skin-nightmode.scss`]).on("change", gulp.parallel("build-css-skin"));
 
-	gulp.watch(["./configs/**/*", "./www/**/*.js", "!./www/js/full.min.js"]).on("change", gulp.parallel("build-js"));
+	gulp.watch(["./configs/**/*", `./themes/${config.site.theme}/**/*.js`, `!./themes/${config.site.theme}/js/full.min.js`]).on("change", gulp.parallel("build-js"));
 });
 
 gulp.task("electron", function() {

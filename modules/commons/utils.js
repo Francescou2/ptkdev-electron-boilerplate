@@ -101,20 +101,20 @@ class Utils {
      *
      */
 	fix_config(config) {
-		let tag = "utils::fix_config()";
-		this.log.info(tag, this.lang.translate("config_fix"));
+		let www = "";
+		if (config.site.www === "show") {
+			www = "themes.";
+		}
 
 		if (config.system.debug === "enabled") {
 			config.site.www = "hide";
 			config.site.protocol = "http://";
 			config.site.url = `localhost:${config.server.bs_port}`;
+			config.site.fullurl = config.site.protocol + www + config.site.url;
+		} else {
+			config.site.fullurl = `..`;
 		}
 
-		let www = "";
-		if (config.site.www === "show") {
-			www = "www.";
-		}
-		config.site.fullurl = config.site.protocol + www + config.site.url;
 		config.system.version = this.version;
 
 		if (config.site.pwa.version === "") {
