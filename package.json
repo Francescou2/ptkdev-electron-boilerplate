@@ -31,6 +31,7 @@
 		"build-win": "npm run build-compile && electron-builder --dir --win portable",
 		"build-win-32bit": "npm run build-compile && electron-builder --dir --win portable --ia32",
 		"build-lnx": "npm run build-compile && electron-builder --dir --linux deb",
+		"build-lnx-appimage": "npm run build-compile && electron-builder --dir --linux AppImage",
 		"clean": "rm -rf build node_modules package-lock.json && npm install",
 		"update": "rm -f package-lock.json && npm update",
 		"vendor": "cpy node_modules/cash-dom/dist/cash.min.js themes/default/js/vendor/cash-dom/ && cpy node_modules/bulma/css/bulma.min.css themes/default/css/vendor/bulma/ && cpy node_modules/vanilla-lazyload/dist/lazyload.min.js themes/default/js/vendor/lazyload/",

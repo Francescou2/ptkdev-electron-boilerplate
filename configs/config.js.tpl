@@ -2,7 +2,7 @@ module.exports = {
 	// Developer Configs
 	"system": {
 		"config_version": "1.0.0",   // version of this file, version increase if change values from previously config
-		"debug": "enabled",         // debug mode, disabled for prod
+		"debug": "disabled",         // debug mode = express localhost, disabled for prod/build
 		"platform": "electron",		 // platform (cordova, electron, express)
 		"language": "en",            // available: en = English / it = Italian
 		"nginx": "disabled",         // Better performance if you use ngnix for serve static files, example: configs/nginx.conf.tpl

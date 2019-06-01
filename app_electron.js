@@ -70,7 +70,7 @@ function create_window() {
 		main_window.loadURL("http://localhost:3001");
 	}
 
-	// main_window.openDevTools();
+	main_window.openDevTools();
 
 	if (process.platform != "darwin") {
 		app_icon.on("click", function(event) {
